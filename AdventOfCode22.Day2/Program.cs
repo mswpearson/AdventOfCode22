@@ -7,7 +7,7 @@ Console.WriteLine(gameTuples.Sum(gameTuple => GetTotalGameScore(gameTuple)));
 int GetTotalGameScore(string[] gameTuple)
 {
     RPS opponentPlays = GetOpponentRPS(gameTuple[0]);
-    RPS youPlay = GetYourRPS(gameTuple[1]);
+    RPS youPlay = GetYourRPS(opponentPlays, gameTuple[1]);
     int totalScore = (int)youPlay;
     totalScore += GetGameScore(opponentPlays, youPlay);
     return totalScore;
@@ -31,11 +31,21 @@ RPS GetOpponentRPS(string played)
     else return RPS.S;
 }
 
-RPS GetYourRPS(string played)
+RPS GetYourRPS(RPS opponentPlayed, string played)
 {
-    if (played == "X") return RPS.R;
-    else if (played == "Y") return RPS.P;
-    else return RPS.S;
+    if (played == "X")
+    {
+        if (opponentPlayed == RPS.R) return RPS.S;
+        else if (opponentPlayed == RPS.P) return RPS.R;
+        else return RPS.P;
+    }
+    else if (played == "Y") return opponentPlayed;
+    else
+    {
+        if (opponentPlayed == RPS.R) return RPS.P;
+        else if (opponentPlayed == RPS.P) return RPS.S;
+        else return RPS.R;
+    }
 }
 
 enum RPS
