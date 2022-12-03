@@ -1,17 +1,20 @@
 ﻿string inputText = File.ReadAllText("puzzleInput.txt");
 var bags = inputText.Split("\r\n");
-var compartmentTuples = bags.Select(bag => (bag.Substring(0, bag.Length/2), bag.Substring(bag.Length/2, bag.Length/2)));
+var bagGroups = bags.Select((x, i) => new { Index = i, Value = x })
+            .GroupBy(x => x.Index / 3)
+            .Select(x => x.Select(v => v.Value).ToList())
+            .ToList();
 
-var total = compartmentTuples.Sum(compartmentTuple => GetCompartmentTupleTotal(compartmentTuple));
+var total = bagGroups.Sum(bagGroup => GetGroupTotal(bagGroup));
 
 Console.WriteLine(total);
 
-int GetCompartmentTupleTotal((string compartment1, string compartment2) compartmentTuple)
+int GetGroupTotal(IEnumerable<string> group)
 {
     char duplicateChar = 'A';
-    foreach(char @char in compartmentTuple.compartment1)
+    foreach(char @char in group.ElementAt(0))
     {
-        if (compartmentTuple.compartment2.Contains(@char))
+        if (group.ElementAt(1).Contains(@char) && group.ElementAt(2).Contains(@char))
         {
             duplicateChar = @char;
             break;
