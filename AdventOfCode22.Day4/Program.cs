@@ -23,6 +23,5 @@ IEnumerable<int> GetExpandedAssignments(string assingment)
 
 bool DoesOneAssignmentContainTheOther((IEnumerable<int>, IEnumerable<int>) expandedAssignments)
 {
-    return expandedAssignments.Item1.Intersect(expandedAssignments.Item2).Count() == expandedAssignments.Item1.Count()
-        || expandedAssignments.Item2.Intersect(expandedAssignments.Item1).Count() == expandedAssignments.Item2.Count();
+    return expandedAssignments.Item1.Any(ea => expandedAssignments.Item2.Contains(ea));
 }
