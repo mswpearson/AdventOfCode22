@@ -84,11 +84,16 @@ foreach (var instruction in instructions)
     int from = int.Parse(splitInstruction[3]) - 1;
     int to = int.Parse(splitInstruction[5]) - 1;
 
+    var innerStack = new Stack<char>();
     while (quantity > 0)
     {
-        var popped = stacks[from].Pop();
-        stacks[to].Push(popped);
+        innerStack.Push(stacks[from].Pop());
         quantity -= 1;
+    }
+
+    foreach (var thing in innerStack)
+    {
+        stacks[to].Push(thing);
     }
 }
 
