@@ -1,0 +1,1 @@
+﻿string inputText = File.ReadAllText("puzzleInput.txt");
