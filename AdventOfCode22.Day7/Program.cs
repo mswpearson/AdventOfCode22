@@ -64,5 +64,8 @@ int GetSizeOfDirectory(string fullDirectoryPath)
 }
 
 var allDirectorySizes = allDirectories.Select(dir => GetSizeOfDirectory(dir.Path));
+var maxUsedSpace = 70_000_000 - 30_000_000;
+var usedSpace = allDirectorySizes.Max(); // Biggest used space will be the root
 
-Console.WriteLine(allDirectorySizes.Where(dSize => dSize <= 100_000).Sum());
+var potentialDirectories = allDirectorySizes.Where(dSize => usedSpace - dSize <= maxUsedSpace);
+Console.WriteLine(potentialDirectories.Min());
