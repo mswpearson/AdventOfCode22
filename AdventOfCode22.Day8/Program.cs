@@ -17,19 +17,21 @@ Console.WriteLine(visibleTrees);
 bool IsVisible(int treeHeight, int row, int col)
 {
     // visible from left
-    if (rows[row].Take(row).All(tree => tree < treeHeight)) return true;
+    var toTheLeft = rows[row].Take(col);
+    if (toTheLeft.All(tree => tree < treeHeight)) return true;
 
     // visible from right
-    if (rows[row].Skip(row).All(tree => tree < treeHeight)) return true;
+    var toTheRight = rows[row].Skip(col+1);
+    if (toTheRight.All(tree => tree < treeHeight)) return true;
 
     // visible from top
     var column = rows.Select(row => row[col]);
-    if (rows[row].Take(row).All(tree => tree < treeHeight)) return true;
+    var above = column.Take(row);
+    if (above.All(tree => tree < treeHeight)) return true;
 
     // visible from bottom
-    if (rows[row].Skip(row).All(tree => tree < treeHeight)) return true;
+    var below = column.Skip(row+1);
+    if (below.All(tree => tree < treeHeight)) return true;
 
     return false;
 }
-
-//1826
