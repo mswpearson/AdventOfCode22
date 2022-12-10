@@ -49,7 +49,7 @@ void DrawPixel()
 
     var spritePos = GetSpritePosition();
     var horizontalPos = cycle - (rowIndex * 40) - 1;
-    rows[rowIndex][horizontalPos] = spritePos.Contains(horizontalPos) ? "#" : ".";
+    rows[rowIndex][horizontalPos] = spritePos.Contains(horizontalPos) ? "#" : " ";
 }
 
 int[] GetSpritePosition()
