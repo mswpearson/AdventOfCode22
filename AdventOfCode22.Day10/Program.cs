@@ -4,7 +4,16 @@ string[] instructions = inputText.Split("\r\n");
 int cycle = 0;
 int X = 1;
 
-var signalStrengthsCollector = new List<int>();
+var rows = new string[][]
+{
+    Enumerable.Repeat(" ", 40).ToArray(),
+    Enumerable.Repeat(" ", 40).ToArray(),
+    Enumerable.Repeat(" ", 40).ToArray(),
+    Enumerable.Repeat(" ", 40).ToArray(),
+    Enumerable.Repeat(" ", 40).ToArray(),
+    Enumerable.Repeat(" ", 40).ToArray()
+};
+
 
 foreach(var instruction in instructions)
 {
@@ -16,24 +25,39 @@ void ExecuteInstruction(string instruction)
     if (instruction == "noop")
     {
         cycle += 1;
-        CollectIfNeed();
+        DrawPixel();
     }
     else
     {
         cycle += 1;
-        CollectIfNeed();
+        DrawPixel();
         cycle += 1;
-        CollectIfNeed();
+        DrawPixel();
         X += int.Parse(instruction.Split(' ')[1]);
     }
 }
 
-void CollectIfNeed()
+void DrawPixel()
 {
-    if (new int[] { 20, 60, 100, 140, 180, 220 }.Contains(cycle))
-    {
-        signalStrengthsCollector.Add(cycle * X);
-    }
+    int rowIndex = -1;
+    if (cycle <= 40) rowIndex = 0;
+    else if (cycle <= 80) rowIndex = 1;
+    else if (cycle <= 120) rowIndex = 2;
+    else if (cycle <= 160) rowIndex = 3;
+    else if (cycle <= 200) rowIndex = 4;
+    else if (cycle <= 240) rowIndex = 5;
+
+    var spritePos = GetSpritePosition();
+    var horizontalPos = cycle - (rowIndex * 40) - 1;
+    rows[rowIndex][horizontalPos] = spritePos.Contains(horizontalPos) ? "#" : ".";
 }
 
-Console.WriteLine(signalStrengthsCollector.Sum());
+int[] GetSpritePosition()
+{
+    return new int[] { X-1, X, X+1 };
+}
+
+foreach (var row in rows)
+{
+    Console.WriteLine(string.Join("", row));
+}
